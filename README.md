@@ -8,6 +8,9 @@
 [![npm downloads](https://img.shields.io/npm/dm/@abhinav943/zynex.svg?style=flat-square)](https://www.npmjs.com/package/@abhinav943/zynex)
 [![TypeScript](https://img.shields.io/badge/%3C%2F%3E-TypeScript-blue.svg?style=flat-square)](https://www.typescriptlang.org/)
 [![License: ISC](https://img.shields.io/badge/License-ISC-green.svg?style=flat-square)](https://opensource.org/licenses/ISC)
+[![minzipped size](https://badgen.net/bundlephobia/minzip/@abhinav943/zynex)](https://bundlephobia.com/package/@abhinav943/zynex)
+[![dependency count](https://badgen.net/bundlephobia/dependency-count/@abhinav943/zynex)](https://bundlephobia.com/package/@abhinav943/zynex)
+[![tree-shaking](https://badgen.net/bundlephobia/tree-shaking/@abhinav943/zynex)](https://bundlephobia.com/package/@abhinav943/zynex)
 
 Zynex replaces messy Regex blocks with a fluent, chainable API. Instead of just returning `false` when a validation fails, Zynex returns a structured array of detailed errors, allowing you to tell your users exactly *why* their input was rejected.
 
