@@ -1,17 +1,28 @@
 {
   "name": "phloem",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A zero-dependency, detailed validation engine for Emails, Passwords, and URLs.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "tsx watch sandbox.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "validator",
+    "email",
+    "password",
+    "url",
+    "validation",
+    "typescript"
+  ],
+  "author": "Abhinav",
   "license": "ISC",
-  "type": "module",
   "devDependencies": {
     "@types/node": "^25.6.0",
     "tsx": "^4.21.0",

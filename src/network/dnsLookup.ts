@@ -1,4 +1,4 @@
-import dns from "dns/promises";
+import dns from "node:dns/promises";
 
 export const hasMxRecords = async (domain: string): Promise<boolean> => {
   try {
