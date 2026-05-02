@@ -1,6 +1,6 @@
 <div align="center">
 
-# ⚡ Zynex
+# Zynex
 
 **A zero-dependency, detailed validation engine for Node.js and TypeScript.**
 
@@ -18,7 +18,7 @@ Zynex replaces messy Regex blocks with a fluent, chainable API. Instead of just 
 
 ---
 
-## 📑 Table of Contents
+## Table of Contents
 - [Why Zynex?](#-why-zynex)
 - [Installation](#-installation)
 - [Core Concept](#-core-concept)
@@ -32,17 +32,17 @@ Zynex replaces messy Regex blocks with a fluent, chainable API. Instead of just 
 
 ---
 
-## 🚀 Why Zynex?
+## Why Zynex?
 
-- **🔗 Chainable & Fluent API:** Build complex validation rules exactly how you think about them.
-- **📚 Graceful Error Stacking:** Zynex does *not* throw exceptions. It safely accumulates errors and returns them in a structured format, perfect for UI feedback.
-- **🌐 Async Network Checks:** Go beyond basic syntax. Run active DNS and MX record queries to ensure emails and URLs actually exist on the internet.
-- **🪶 Zero Dependencies:** Extremely lightweight. Keeps your `node_modules` tiny and secure.
-- **🛡️ 100% Type-Safe:** Written entirely in TypeScript for first-class autocompletion and strict type definitions out of the box.
+- **Chainable & Fluent API:** Build complex validation rules exactly how you think about them.
+- **Graceful Error Stacking:** Zynex does *not* throw exceptions. It safely accumulates errors and returns them in a structured format, perfect for UI feedback.
+- **Async Network Checks:** Go beyond basic syntax. Run active DNS and MX record queries to ensure emails and URLs actually exist on the internet.
+- **Zero Dependencies:** Extremely lightweight. Keeps your `node_modules` tiny and secure.
+- **100% Type-Safe:** Written entirely in TypeScript for first-class autocompletion and strict type definitions out of the box.
 
 ---
 
-## 📦 Installation
+## Installation
 
 Install Zynex using your preferred package manager:
 
@@ -59,7 +59,7 @@ pnpm add @abhinav943/zynex
 
 ---
 
-## 🧠 Core Concept
+## Core Concept
 
 Every validator in Zynex follows a simple three-step lifecycle:
 
@@ -82,7 +82,7 @@ The final execution always returns a consistent `ValidationResult` object:
 
 ---
 
-## 🛠️ Usage Examples
+## Usage Examples
 
 ### 1. Email Validation
 
@@ -166,7 +166,7 @@ async function validateProfileLink(urlInput: string) {
 
 ---
 
-## 📖 API Reference
+## API Reference
 
 ### `checkEmail(email: string)`
 
@@ -202,7 +202,7 @@ async function validateProfileLink(urlInput: string) {
 
 ---
 
-## 🧰 TypeScript Support
+## TypeScript Support
 
 Zynex exports its core interfaces so you can strongly type your functions and UI components:
 
@@ -218,6 +218,6 @@ import type {
 
 ---
 
-## 📄 License
+## License
 
 This project is open-source and available under the [ISC License](LICENSE). Feel free to use it in your personal and commercial projects!
