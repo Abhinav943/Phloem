@@ -102,13 +102,13 @@ Go beyond regex. Check for syntax, block disposable emails (like Mailinator), an
 import { checkEmail } from '@abhinav943/zynex';
 
 async function validateUserRegistration(emailInput: string) {
+  // Normalization (trimming and lowercasing) happens automatically!
   const result = await checkEmail(emailInput)
-    .isValidSyntax()
-    .normalize()                  // Trims whitespace and converts to lowercase
+    .checkSyntax()                // Validates standard email formatting
     .checkDisposable()            // Blocks temporary/burner emails
     .checkRoleBased()             // Blocks admin@, support@, etc.
-    .suggestTypoCorrection()      // Suggests 'gmail.com' if user typed 'gmial.com'
-    .checkMXRecords()             // [ASYNC] Verifies the domain can actually receive mail
+    .checkTypos()                 // Suggests 'gmail.com' if user typed 'gmial.com'
+    .checkDNS()                   // [ASYNC] Verifies the domain can actually receive mail
     .executeAsync();
 
   console.log(result);
@@ -125,18 +125,18 @@ import { checkPassword } from '@abhinav943/zynex';
 function validateNewPassword(passwordInput: string) {
   // Purely synchronous checks use .execute()
   const result = checkPassword(passwordInput)
-    .min(8)
-    .max(64)
-    .requireUppercase()
-    .requireLowercase()
-    .requireNumber()
-    .requireSpecialChar()
-    .noWhitespace()
+    .minLength(8)
+    .hasUppercase()
+    .hasLowercase()
+    .hasNumber()
+    .hasSpecialChar()
+    .hasNoSpaces()
     .execute();
 
   if (!result.isValid) {
-    // Map through the structured errors to display in your UI
     result.errors.forEach(err => console.error(`[${err.type}]: ${err.message}`));
+  } else {
+    console.log(`Password Strength: ${result.strength.label} (${result.strength.score}/5)`);
   }
 }
 ```
@@ -178,28 +178,29 @@ async function validateProfileLink(urlInput: string) {
 
 ## API Reference
 
+*Tip: Almost every method in Zynex accepts an optional customMessage string as its final argument so you can override the default error text!*
+
 ### `checkEmail(email: string)`
 
 | Method | Type | Description |
 |---|---|---|
-| `.isValidSyntax()` | Sync | Validates standard email formatting using RFC-compliant logic. |
-| `.normalize()` | Sync | Trims padding and converts the email to lowercase. |
+| `.checkSyntax()` | Sync | Validates standard email formatting using RFC-compliant logic. |
 | `.checkDisposable()` | Sync | Fails if the domain belongs to known temporary email providers. |
 | `.checkRoleBased()` | Sync | Fails if the local part is a generic role (e.g., admin, info). |
-| `.suggestTypoCorrection()` | Sync | Returns a suggested domain if a common typo is detected (e.g., gamil.com). |
-| `.checkMXRecords()` | Async | Performs a DNS lookup to verify the domain has active Mail Exchange records. |
+| `.checkTypos()` | Sync | Returns a suggested domain if a common typo is detected (e.g., gamil.com). |
+| `.checkDNS()` | Async | Performs a DNS lookup to verify the domain has active Mail Exchange records. |
+*(Note: Normalization, such as trimming and lowercasing, is handled automatically upon initialization).*
 
 ### `checkPassword(password: string)`
 
 | Method | Type | Description |
 |---|---|---|
-| `.min(length: number)` | Sync | Enforces a minimum character length. |
-| `.max(length: number)` | Sync | Enforces a maximum character length. |
-| `.requireUppercase()` | Sync | Requires at least one uppercase letter (A-Z). |
-| `.requireLowercase()` | Sync | Requires at least one lowercase letter (a-z). |
-| `.requireNumber()` | Sync | Requires at least one numeric digit (0-9). |
-| `.requireSpecialChar()` | Sync | Requires at least one special character (e.g., @, #, !). |
-| `.noWhitespace()` | Sync | Fails if the password contains spaces. |
+| `.minLength(length: number)` | Sync | Enforces a minimum character length. |
+| `.hasUppercase()` | Sync | Requires at least one uppercase letter (A-Z). |
+| `.hasLowercase()` | Sync | Requires at least one lowercase letter (a-z). |
+| `.hasNumber()` | Sync | Requires at least one numeric digit (0-9). |
+| `.hasSpecialChar()` | Sync | Requires at least one special character (e.g., @, #, !). |
+| `.hasNoSpaces()` | Sync | Fails if the password contains spaces. |
 
 ### `checkURL(url: string)`
 
@@ -218,14 +219,13 @@ Zynex exports its core interfaces so you can strongly type your functions and UI
 
 ```typescript
 import type { 
-  ValidationResult, 
   ValidationError,
+  PasswordError,
+  URLError,
   EmailValidator,
   PasswordValidator,
   URLValidator
 } from '@abhinav943/zynex';
-```
-
 ---
 
 ## 🤝 Contributing
