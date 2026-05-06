@@ -1,6 +1,6 @@
 {
   "name": "@abhinav943/zynex",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A zero-dependency, detailed validation engine for Emails, Passwords, and URLs.",
   "type": "module",
   "main": "dist/index.js",
