@@ -19,7 +19,7 @@ To get the codebase running on your local machine:
 1. **Fork the repository** to your own GitHub account.
 2. **Clone your fork:**
    ```bash
-   git clone [https://github.com/Abhinav943/Zynex](https://github.com/Abhinav943/Zynex)
+   git clone https://github.com/Abhinav943/Zynex
    cd Zynex
    ```
 Install dependencies (these are strictly devDependencies like TypeScript and testing frameworks):
