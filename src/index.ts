@@ -17,8 +17,8 @@ export class EmailValidator {
 
   constructor(email: string) {
     this.email = normalizeEmail(email);
+    this.checkSyntax();
   }
-
 
   checkSyntax(customMessage?: string) {
     if (!isValidSyntax(this.email)) {
@@ -89,7 +89,6 @@ export class EmailValidator {
     return this;
   }
 
-
   execute() {
     if (this.asyncTasks.length > 0) {
       console.warn(
@@ -107,7 +106,7 @@ export class EmailValidator {
     for (const task of this.asyncTasks) {
       await task();
     }
-    
+
     this.asyncTasks = [];
     return this.execute();
   }
@@ -115,6 +114,6 @@ export class EmailValidator {
 
 export const checkEmail = (email: string) => new EmailValidator(email);
 export { checkPassword, PasswordValidator } from "./password.js";
-export { checkURL, URLValidator } from './url.js';
-export { checkIP, IPValidator } from './ip.js';
-export type { IPError, IPResult } from './ip.js';
+export { checkURL, URLValidator } from "./url.js";
+export { checkIP, IPValidator } from "./ip.js";
+export type { IPError, IPResult } from "./ip.js";

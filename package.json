@@ -9,10 +9,10 @@
     "dist"
   ],
   "scripts": {
-    "dev": "tsx watch sandbox.ts",
     "build": "tsc",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [
     "validator",
@@ -26,6 +26,8 @@
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^25.6.0",
+    "@vitest/coverage-v8": "^4.1.5",
+    "fast-check": "^4.7.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3",
     "vitest": "^4.1.5"
