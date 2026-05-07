@@ -14,13 +14,14 @@
 [![View on GitHub](https://img.shields.io/badge/GitHub-Zynex-blue?logo=github)](https://github.com/Abhinav943/Zynex)
 [![Tests](https://img.shields.io/badge/tests-31%20passed-brightgreen.svg?style=flat-square)](https://github.com/Abhinav943/Zynex/actions)
 
-Zynex replaces messy Regex blocks with a fluent, chainable API. Instead of just returning `false` when a validation fails, Zynex returns a structured array of detailed errors, allowing you to tell your users exactly *why* their input was rejected.
+Zynex replaces messy Regex blocks with a fluent, chainable API. Instead of just returning `false` when a validation fails, Zynex returns a structured array of detailed errors, allowing you to tell your users exactly _why_ their input was rejected.
 
 </div>
 
 ---
 
 ## Table of Contents
+
 - [Why Zynex?](#-why-zynex)
 - [Installation](#-installation)
 - [Core Concept](#-core-concept)
@@ -37,7 +38,7 @@ Zynex replaces messy Regex blocks with a fluent, chainable API. Instead of just 
 ## Why Zynex?
 
 - **Chainable & Fluent API:** Build complex validation rules exactly how you think about them.
-- **Graceful Error Stacking:** Zynex does *not* throw exceptions. It safely accumulates errors and returns them in a structured format, perfect for UI feedback.
+- **Graceful Error Stacking:** Zynex does _not_ throw exceptions. It safely accumulates errors and returns them in a structured format, perfect for UI feedback.
 - **Async Network Checks:** Go beyond basic syntax. Run active DNS and MX record queries to ensure emails and URLs actually exist on the internet.
 - **Zero Dependencies:** Extremely lightweight. Keeps your `node_modules` tiny and secure.
 - **100% Type-Safe:** Written entirely in TypeScript for first-class autocompletion and strict type definitions out of the box.
@@ -86,7 +87,7 @@ The final execution always returns a consistent `ValidationResult` object:
 
 ## 🛡️ Battle-Tested
 
-Zynex is built with reliability as the top priority. The engine is fully tested using **Vitest**, covering both synchronous logic and asynchronous network checks (DNS/MX lookups). 
+Zynex is built with reliability as the top priority. The engine is fully tested using **Vitest**, covering both synchronous logic and asynchronous network checks (DNS/MX lookups).
 
 We ensure that every validation rule, custom error message, and async fallback behaves predictably before any release.
 
@@ -99,16 +100,16 @@ We ensure that every validation rule, custom error message, and async fallback b
 Go beyond regex. Check for syntax, block disposable emails (like Mailinator), and query actual mail servers.
 
 ```typescript
-import { checkEmail } from '@abhinav943/zynex';
+import { checkEmail } from "@abhinav943/zynex";
 
 async function validateUserRegistration(emailInput: string) {
   // Normalization (trimming and lowercasing) happens automatically!
   const result = await checkEmail(emailInput)
-    .checkSyntax()                // Validates standard email formatting
-    .checkDisposable()            // Blocks temporary/burner emails
-    .checkRoleBased()             // Blocks admin@, support@, etc.
-    .checkTypos()                 // Suggests 'gmail.com' if user typed 'gmial.com'
-    .checkDNS()                   // [ASYNC] Verifies the domain can actually receive mail
+    .checkSyntax() // Validates standard email formatting
+    .checkDisposable() // Blocks temporary/burner emails
+    .checkRoleBased() // Blocks admin@, support@, etc.
+    .checkTypos() // Suggests 'gmail.com' if user typed 'gmial.com'
+    .checkDNS() // [ASYNC] Verifies the domain can actually receive mail
     .executeAsync();
 
   console.log(result);
@@ -120,7 +121,7 @@ async function validateUserRegistration(emailInput: string) {
 Enforce strong security policies while giving users exact feedback on what they are missing.
 
 ```typescript
-import { checkPassword } from '@abhinav943/zynex';
+import { checkPassword } from "@abhinav943/zynex";
 
 function validateNewPassword(passwordInput: string) {
   // Purely synchronous checks use .execute()
@@ -134,9 +135,13 @@ function validateNewPassword(passwordInput: string) {
     .execute();
 
   if (!result.isValid) {
-    result.errors.forEach(err => console.error(`[${err.type}]: ${err.message}`));
+    result.errors.forEach((err) =>
+      console.error(`[${err.type}]: ${err.message}`),
+    );
   } else {
-    console.log(`Password Strength: ${result.strength.label} (${result.strength.score}/5)`);
+    console.log(
+      `Password Strength: ${result.strength.label} (${result.strength.score}/5)`,
+    );
   }
 }
 ```
@@ -148,9 +153,18 @@ Example output for a weak password:
   "isValid": false,
   "value": "weak",
   "errors": [
-    { "type": "MIN_LENGTH", "message": "Password must be at least 8 characters long." },
-    { "type": "UPPERCASE_REQUIRED", "message": "Password must contain at least one uppercase letter." },
-    { "type": "NUMBER_REQUIRED", "message": "Password must contain at least one number." }
+    {
+      "type": "MIN_LENGTH",
+      "message": "Password must be at least 8 characters long."
+    },
+    {
+      "type": "UPPERCASE_REQUIRED",
+      "message": "Password must contain at least one uppercase letter."
+    },
+    {
+      "type": "NUMBER_REQUIRED",
+      "message": "Password must contain at least one number."
+    }
   ]
 }
 ```
@@ -160,13 +174,13 @@ Example output for a weak password:
 Validate links, ensure secure protocols, and verify domain reachability.
 
 ```typescript
-import { checkURL } from '@abhinav943/zynex';
+import { checkURL } from "@abhinav943/zynex";
 
 async function validateProfileLink(urlInput: string) {
   const result = await checkURL(urlInput)
     .isValid()
     .requireHTTPS()
-    .allowedDomains(['github.com', 'linkedin.com']) // Restrict to specific hosts
+    .allowedDomains(["github.com", "linkedin.com"]) // Restrict to specific hosts
     .checkDNS() // [ASYNC] Verifies the host resolves on the network
     .executeAsync();
 
@@ -178,38 +192,39 @@ async function validateProfileLink(urlInput: string) {
 
 ## API Reference
 
-*Tip: Almost every method in Zynex accepts an optional customMessage string as its final argument so you can override the default error text!*
+_Tip: Almost every method in Zynex accepts an optional customMessage string as its final argument so you can override the default error text!_
 
 ### `checkEmail(email: string)`
 
-| Method | Type | Description |
-|---|---|---|
-| `.checkSyntax()` | Sync | Validates standard email formatting using RFC-compliant logic. |
-| `.checkDisposable()` | Sync | Fails if the domain belongs to known temporary email providers. |
-| `.checkRoleBased()` | Sync | Fails if the local part is a generic role (e.g., admin, info). |
-| `.checkTypos()` | Sync | Returns a suggested domain if a common typo is detected (e.g., gamil.com). |
-| `.checkDNS()` | Async | Performs a DNS lookup to verify the domain has active Mail Exchange records. |
-*(Note: Normalization, such as trimming and lowercasing, is handled automatically upon initialization).*
+| Method               | Type  | Description                                                                  |
+| -------------------- | ----- | ---------------------------------------------------------------------------- |
+| `.checkSyntax()`     | Sync  | Validates standard email formatting using RFC-compliant logic.               |
+| `.checkDisposable()` | Sync  | Fails if the domain belongs to known temporary email providers.              |
+| `.checkRoleBased()`  | Sync  | Fails if the local part is a generic role (e.g., admin, info).               |
+| `.checkTypos()`      | Sync  | Returns a suggested domain if a common typo is detected (e.g., gamil.com).   |
+| `.checkDNS()`        | Async | Performs a DNS lookup to verify the domain has active Mail Exchange records. |
+
+_(Note: Normalization, such as trimming and lowercasing, is handled automatically upon initialization)._
 
 ### `checkPassword(password: string)`
 
-| Method | Type | Description |
-|---|---|---|
-| `.minLength(length: number)` | Sync | Enforces a minimum character length. |
-| `.hasUppercase()` | Sync | Requires at least one uppercase letter (A-Z). |
-| `.hasLowercase()` | Sync | Requires at least one lowercase letter (a-z). |
-| `.hasNumber()` | Sync | Requires at least one numeric digit (0-9). |
-| `.hasSpecialChar()` | Sync | Requires at least one special character (e.g., @, #, !). |
-| `.hasNoSpaces()` | Sync | Fails if the password contains spaces. |
+| Method                       | Type | Description                                              |
+| ---------------------------- | ---- | -------------------------------------------------------- |
+| `.minLength(length: number)` | Sync | Enforces a minimum character length.                     |
+| `.hasUppercase()`            | Sync | Requires at least one uppercase letter (A-Z).            |
+| `.hasLowercase()`            | Sync | Requires at least one lowercase letter (a-z).            |
+| `.hasNumber()`               | Sync | Requires at least one numeric digit (0-9).               |
+| `.hasSpecialChar()`          | Sync | Requires at least one special character (e.g., @, #, !). |
+| `.hasNoSpaces()`             | Sync | Fails if the password contains spaces.                   |
 
 ### `checkURL(url: string)`
 
-| Method | Type | Description |
-|---|---|---|
-| `.isValid()` | Sync | Parses the string to ensure it is a structurally valid URL. |
-| `.requireHTTPS()` | Sync | Fails if the protocol is not `https:`. |
-| `.allowedDomains(list)` | Sync | Restricts the URL to an array of specific hostnames. |
-| `.checkDNS()` | Async | Performs a network lookup to ensure the hostname actually resolves. |
+| Method                  | Type  | Description                                                         |
+| ----------------------- | ----- | ------------------------------------------------------------------- |
+| `.isValid()`            | Sync  | Parses the string to ensure it is a structurally valid URL.         |
+| `.requireHTTPS()`       | Sync  | Fails if the protocol is not `https:`.                              |
+| `.allowedDomains(list)` | Sync  | Restricts the URL to an array of specific hostnames.                |
+| `.checkDNS()`           | Async | Performs a network lookup to ensure the hostname actually resolves. |
 
 ---
 
@@ -218,15 +233,16 @@ async function validateProfileLink(urlInput: string) {
 Zynex exports its core interfaces so you can strongly type your functions and UI components:
 
 ```typescript
-import type { 
+import type {
   ValidationError,
   PasswordError,
   URLError,
   EmailValidator,
   PasswordValidator,
-  URLValidator
-} from '@abhinav943/zynex';
+  URLValidator,
+} from "@abhinav943/zynex";
 ```
+
 ---
 
 ## 🤝 Contributing
