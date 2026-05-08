@@ -1,0 +1,28 @@
+early_access: true
+reviews:
+  poem: false
+  high_level_summary: true
+  auto_title_placeholder: "@coderabbitai title"
+
+  auto_title_instructions: |
+    Generate the PR title following the Conventional Commits format.
+    Format: `type(scope): description`
+    Valid types: feat, fix, chore, docs, test.
+    Description must be lowercase and imperative mood.
+
+  path_instructions:
+    - path: "package.json"
+      instructions: |
+        ZYNEX IS A ZERO-DEPENDENCY PACKAGE. 
+        If this PR adds any package to "dependencies", you must flag it as a critical violation and request changes. "devDependencies" are allowed for testing/linting.
+
+    - path: "src/*.ts"
+      instructions: |
+        Review for strict TypeScript safety. 
+        Ensure no use of the `any` type or `// @ts-ignore`.
+        Verify that new validators correctly return the standard `{ isValid: boolean, errors: [] }` object.
+
+    - path: "src/test/*.ts"
+      instructions: |
+        Verify that Vitest is used.
+        If the PR introduces a new feature, strongly suggest adding a `fast-check` generator to `chaos.test.ts` for property-based fuzzing.

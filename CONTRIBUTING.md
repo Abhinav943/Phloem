@@ -1,68 +1,96 @@
 # Contributing to Zynex
 
-First off, thank you for considering contributing to Zynex! We want to make contributing to this project as easy and transparent as possible, whether it's:
+First off, thank you for considering contributing to Zynex! It's people like you that make open-source software such a great community.
 
-- Reporting a bug
-- Discussing the current state of the code
-- Submitting a fix
-- Proposing new features
+Zynex is designed to be a zero-dependency, type-safe, and highly rigorous validation engine. To maintain this standard, we have a strict automated pipeline. Please read this guide to understand our development workflow before submitting a Pull Request.
 
-## 🧠 Our Core Philosophy
+## 🧠 Core Philosophy
 
-Before writing code, please keep the core tenets of Zynex in mind:
+- **Zero Dependencies**: The core library must never rely on third-party NPM packages for production logic. (devDependencies for testing and linting are fine).
+- **Type Safety**: All features must include strict TypeScript interfaces. The use of `any` or `// @ts-ignore` is strictly prohibited.
+- **Fluent API**: Validation should be chainable and return our standard `{ isValid: boolean, errors: ValidationError[] }` object.
 
-1. **Zero Dependencies:** We do not use external NPM packages for validation logic. Everything must be written using native Node.js and JavaScript/TypeScript.
-2. **Fluent API:** Validation rules should be chainable.
-3. **Graceful Errors:** We never throw exceptions for bad user input; we accumulate them in the `errors` array.
+## 🛠️ Local Setup
 
-## 🛠️ Local Development Setup
-
-To get the codebase running on your local machine:
-
-1. **Fork the repository** to your own GitHub account.
-2. **Clone your fork:**
-   ```bash
-   git clone https://github.com/Abhinav943/Zynex
-   cd Zynex
-   ```
-   Install dependencies (these are strictly devDependencies like TypeScript and testing frameworks):
+1. Fork the repository and clone it to your local machine.
+2. Install the development dependencies:
 
 ```bash
 npm install
 ```
 
-## 🧪 Testing
-
-Zynex is a validation engine, so making sure our logic is bulletproof is the top priority.
-
-Before submitting any Pull Request, you must ensure all tests pass. If you are adding a new validation method, you must include test cases covering both passing and failing scenarios.
+3. Create a new branch for your feature or bug fix:
 
 ```bash
+git checkout -b feature/your-feature-name
+```
+
+## 🧪 Testing Standards
+
+Zynex operates with an iron-clad testing architecture. Your Pull Request will be automatically blocked by our CI pipeline if it lowers the repository's test coverage below 95%.
+
+We use two types of testing:
+
+1. **Unit Tests (Vitest)**  
+   Every new feature requires a standard unit test testing both valid and invalid "happy paths."
+
+```bash
+# Run the test suite and check your coverage
+npm run test:coverage
+```
+
+2. **The "Chaos Engine" (Property-Based Fuzzing)**  
+   We use fast-check to fuzz the engine with thousands of randomized strings. If you add a new validator, you must register a generator for it in `src/test/fuzzer-registry.ts`.
+
+```bash
+# Run the test suite (the Chaos Engine runs automatically)
 npm run test
 ```
 
-## 🚀 Submitting a Pull Request
+## 💅 Formatting & Linting
 
-Create a new branch for your feature or bug fix:
+You do not need to worry about formatting your code manually. Zynex uses Prettier and ESLint, powered by automated Husky pre-commit hooks.
 
-```bash
-git checkout -b feature/my-new-validator
-```
+When you attempt to commit your code, our hooks will automatically format your files and check for logic errors (like unused variables). If your code fails the logic check, the commit will be aborted.
 
-Make your changes and commit them using Conventional Commits (e.g., feat:, fix:, docs:):
+You can run these checks manually at any time:
 
 ```bash
-git commit -m "feat: add IP address validation method"
+# Auto-format your code
+npm run format
+
+# Run ESLint logic checks
+npm run format:check
 ```
 
-Push to your fork:
+## 📝 Commit Message Guidelines
 
-```bash
-git push origin feature/my-new-validator
+We enforce the Conventional Commits standard using commitlint. Your commit messages must follow this exact structure, or the Husky pre-commit hook will reject them:
+
+```
+type(scope?): description
 ```
 
-Open a Pull Request against the main branch of this repository.
+**Valid Types:**
 
-## 💡 Finding Things to Do
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation only changes
+- `test`: Adding missing tests or correcting existing tests
+- `chore`: Changes to the build process, auxiliary tools, or configuration
 
-If you want to contribute but aren't sure where to start, check out our Issues tab! Look for issues labeled good first issue or help wanted.
+**Examples:**
+
+- `feat(email): add support for validating custom top-level domains`
+- `fix(ip): handle empty strings without throwing fatal error`
+- `chore: update github action node versions`
+
+## 🚀 Pull Request Process
+
+1. Ensure your code passes `npm run test:coverage` and `npm run format:check`.
+2. Push your branch to your fork and open a Pull Request against the main branch.
+3. **AI Review**: Our automated co-maintainer (@coderabbitai) will conduct an initial review of your code. Please address any comments it leaves.
+4. **CI Pipeline**: GitHub Actions will run our test suite, coverage checks, and formatting rules.
+5. **Human Review**: Once the bots turn green, a core maintainer will review your logic and merge your feature!
+
+Thank you for helping us build an uncrashable validation engine!
