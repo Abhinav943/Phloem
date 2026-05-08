@@ -115,3 +115,5 @@ export class EmailValidator {
 export const checkEmail = (email: string) => new EmailValidator(email);
 export { checkPassword, PasswordValidator } from "./password.js";
 export { checkURL, URLValidator } from "./url.js";
+export { checkIP, IPValidator } from "./ip.js";
+export type { IPError, IPResult } from "./ip.js";
